@@ -49,7 +49,7 @@ namespace VIPS
                     segment.Width = Int32.Parse(node.Attribute("ObjectRectWidth").Value);
                     segment.Height = Int32.Parse(node.Attribute("ObjectRectHeight").Value);
                     segment.Controls.Add(new WebBrowser() { 
-                        DocumentText = System.Net.WebUtility node.Attribute("SRC").Value,
+                        DocumentText = System.Net.WebUtility.HtmlDecode(node.Attribute("SRC").Value),
                         Dock = DockStyle.Fill
                     });
                     allPanels.Controls.Add(segment);
