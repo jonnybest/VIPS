@@ -17,15 +17,24 @@ namespace VIPS
         {
             InitializeComponent();
 
-            webBrowser1.Navigate("http://test.de");
+            webBrowser1.Navigate("http://paintball.fsmi.uni-karlsruhe.de/bilder");
+            //webBrowser1.Navigate("https://picasaweb.google.com/Paintball.Fsmi/2006Kai?authkey=Gv1sRgCISw9Kao6s6GRQ");
+            
         }
 
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
+
+        }
+
+
+
+        private void Analyze()
+        {
             PAGEANALYZERLib.LayoutAnalyzer2 myAnalyzer = new PAGEANALYZERLib.LayoutAnalyzer2();
             myAnalyzer.Initialize(0);
-            SHDocVw.IWebBrowser2 axbrowser = webBrowser1.ActiveXInstance as SHDocVw.IWebBrowser2;
-            myAnalyzer.Analyze4(axbrowser.Document, 5);
+            SHDocVw.IWebBrowser2 axbrowser = (SHDocVw.IWebBrowser2)webBrowser1.ActiveXInstance;
+            myAnalyzer.Analyze4(axbrowser.Document as Object, 6);
             MSXML2.IXMLDOMDocument result = myAnalyzer.FOMPage as MSXML2.IXMLDOMDocument;
             RebuildPage(XDocument.Parse(result.xml));
         }
@@ -42,7 +51,7 @@ namespace VIPS
             foreach (var node in result.Descendants("LayoutNode"))
             {
                 Debug.WriteLine(node);
-                if (node.DescendantNodes().Count() == 0)
+                if (node.Descendants("LayoutNode").Count() == 0)
                 {
                     var segment = new Panel();
                     
@@ -58,6 +67,12 @@ namespace VIPS
             Debug.Write("allPanels has " + allPanels.Controls.Count + " children.");
             
             this.Controls.Add(allPanels);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            button1.Hide();
+            Analyze();
         }
     }
 }
