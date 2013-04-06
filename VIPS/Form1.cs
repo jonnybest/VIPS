@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Diagnostics;
 
 namespace VIPS
 {
@@ -32,6 +33,31 @@ namespace VIPS
         private void RebuildPage(XDocument result)
         {
             // do something
+            webBrowser1.Hide();
+
+            var allPanels = new FlowLayoutPanel();
+            allPanels.Dock = DockStyle.Fill;
+            allPanels.AutoScroll = true;
+            
+            foreach (var node in result.Descendants("LayoutNode"))
+            {
+                Debug.WriteLine(node);
+                if (node.DescendantNodes().Count() == 0)
+                {
+                    var segment = new Panel();
+                    
+                    segment.Width = Int32.Parse(node.Attribute("ObjectRectWidth").Value);
+                    segment.Height = Int32.Parse(node.Attribute("ObjectRectHeight").Value);
+                    segment.Controls.Add(new WebBrowser() { 
+                        DocumentText = System.Net.WebUtility node.Attribute("SRC").Value,
+                        Dock = DockStyle.Fill
+                    });
+                    allPanels.Controls.Add(segment);
+                }
+            }
+            Debug.Write("allPanels has " + allPanels.Controls.Count + " children.");
+            
+            this.Controls.Add(allPanels);
         }
     }
 }
