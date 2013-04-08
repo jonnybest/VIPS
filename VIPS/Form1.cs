@@ -26,7 +26,7 @@ namespace VIPS
                 flickrexplore = "http://flickr.com/explore",
                 picasa = "https://picasaweb.google.com/Paintball.Fsmi/2006Kai?authkey=Gv1sRgCISw9Kao6s6GRQ"; // separierbar ab 10
 
-            webBrowser1.Navigate(flickrexplore);
+            webBrowser1.Navigate(picasa);
         }
 
         private void Analyze()
